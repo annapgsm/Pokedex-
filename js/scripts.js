@@ -87,7 +87,16 @@ let pokemonRepository = (function () {
 
 })(); // <-- IIFE ends and runs immediately
 
-// Use the public method 'getAll' to get all Pokémon and print each one to the page
+// Add a new Pokemon to test the add function
+pokemonRepository.add({
+  name: 'Onix',
+  height: 8.8,
+  types: ['rock', 'ground'],
+  speed: 70,
+  catchRate: 45
+});
+
+// Use the public method 'getAll' to get all Pokemon and print each one to the page
 // Uses forEach() instead of a for loop
 pokemonRepository.getAll().forEach(function (pokemon) {
   // Build a string with the Pokemon’s name and height
