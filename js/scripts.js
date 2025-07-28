@@ -51,11 +51,9 @@ let pokemonRepository = (function () {
       return;
     }
 
-    // Check if all expected keys match exactly
-    let objectKeys = Object.keys(pokemon);
-    let hasValidKeys =
-      objectKeys.length === expectedKeys.length &&
-      expectedKeys.every(key => objectKeys.includes(key));
+    const objectKeys = Object.keys(pokemon);
+    // Checks if all expected keys are present (allowing extra keys)
+    const hasValidKeys = expectedKeys.every(key => objectKeys.includes(key));
 
     if (!hasValidKeys) {
       console.log('Invalid Pokémon: Keys do not match expected format');
@@ -71,7 +69,7 @@ let pokemonRepository = (function () {
     return pokemonList;
   }
 
-  // NEW: Public function to search by name (exact match or partial)
+  // Public function to search by name (exact match or partial)
   function filterByName(searchTerm) {
     return pokemonList.filter(function (pokemon) {
       return pokemon.name.toLowerCase().includes(searchTerm.toLowerCase());
