@@ -78,16 +78,50 @@ let pokemonRepository = (function () {
     });
   }
 
-  // Return an object that exposes only the public functions
+  // Public function: adds a list item and button to the HTML for each Pokemon
+  function addListItem(pokemon){
+    // Selects the HTML element with class "pokemon-list" (parent container in the DOM)
+    let pokemonList = document.querySelector(".pokemon-list");
+    // Creates a new list item and button
+    let listpokemon = document.createElement("li");
+    let button = document.createElement("button");
+    // Sets the button text to the Pokemon's name
+    button.innerText = pokemon.name;
+    // Adds a class to the button for styling
+    button.classList.add("button-class");
+
+    // Adds (appends) the button to the list item- and the list item to the list in the page
+    listpokemon.appendChild(button);
+    pokemonList.appendChild(listpokemon);
+
+    //Calls new function to add click listener
+    addClickListener(button,pokemon);
+  }
+
+  // Function to show Pokemon details
+  function showDetails(pokemon){
+    // Prints the full Pokemon object to the console
+    console.log(pokemon);
+  }
+
+  //New function to add event listener to a button
+  function addClickListener(button, pokemon){
+    button.addEventListener("click",function (){
+      showDetails(pokemon)
+    });
+  }
+
+  // Returns an object that exposes only the public functions
   return {
     getAll,
     add,
-    filterByName
+    filterByName,
+    addListItem
   };
 
 })(); // <-- IIFE ends and runs immediately
 
-// Add a new Pokemon to test the add function
+// Adds a new Pokemon to test the add function
 pokemonRepository.add({
   name: 'Onix',
   height: 8.8,
@@ -99,7 +133,10 @@ pokemonRepository.add({
 // Use the public method 'getAll' to get all Pokemon and print each one to the page
 // Uses forEach() instead of a for loop
 pokemonRepository.getAll().forEach(function (pokemon) {
-  // Build a string with the Pokemon’s name and height
+  // For each Pokemon, create a button on the page
+  pokemonRepository.addListItem(pokemon);
+
+/*  // Build a string with the Pokemon’s name and height
   let displayText = pokemon.name + ' (height: ' + pokemon.height + ')';
 
   // Add a comment if the Pokemon is tall
@@ -108,7 +145,7 @@ pokemonRepository.getAll().forEach(function (pokemon) {
   }
 
   // Write the string to the HTML document followed by a line break
-  document.write(displayText + '<br>');
+  document.write(displayText + '<br>'); */
 });
 
 
