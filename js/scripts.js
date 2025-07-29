@@ -71,7 +71,12 @@ let pokemonRepository = (function () {
 
   // Public function to search by name (exact match or partial)
   function filterByName(searchTerm) {
+    // Removes any extra spaces from the beginning and end of input
+    // then converts it to lowercase for case-insensitive comparison
     let cleanTerm = searchTerm.trim().toLowerCase();
+
+    // Filters the pokemonList array: keeps only the Pokemon whose name
+    // (converted to lowercase) includes the cleaned search term
     return pokemonList.filter(function (pokemon) {
       return pokemon.name.toLowerCase().includes(cleanTerm);
     });
