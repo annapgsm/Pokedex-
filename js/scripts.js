@@ -71,8 +71,9 @@ let pokemonRepository = (function () {
 
   // Public function to search by name (exact match or partial)
   function filterByName(searchTerm) {
+    let cleanTerm = searchTerm.trim().toLowerCase();
     return pokemonList.filter(function (pokemon) {
-      return pokemon.name.toLowerCase().includes(searchTerm.toLowerCase());
+      return pokemon.name.toLowerCase().includes(cleanTerm);
     });
   }
 
