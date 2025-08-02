@@ -2,66 +2,23 @@
 let pokemonRepository = (function () {
   // Private array inside the IIFE
   // Create a new variable (pokemonList) 
-  let pokemonList = [
-    {
-      name: 'Bulbasaur',
-      height: 0.7,
-      types: ['grass', 'poison'],
-      speed: 45,
-      catchRate: 45
-    },
-    {
-      name: 'Charmander',
-      height: 0.6,
-      types: ['fire'],
-      speed: 65,
-      catchRate: 45
-    },
-    {
-      name: 'Squirtle',
-      height: 0.5,
-      types: ['water'],
-      speed: 43,
-      catchRate: 45
-    },
-    {
-      name: 'Turtwig',
-      height: 0.4,
-      types: ['grass'],
-      speed: 31,
-      catchRate: 45
-    },
-    {
-      name: 'Pikachu',
-      height: 0.4,
-      types: ['electric'],
-      speed: 90,
-      catchRate: 190
-    }
-  ];
+  let pokemonList = [];
+  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
   // Public function: adds a new Pokemon to the list (with validation)
   const expectedKeys = ['name', 'height', 'types', 'speed', 'catchRate'];
 
   // Public function to add a new Pokemon
   function add(pokemon) {
-    // Check if it's an object
-    if (typeof pokemon !== 'object') {
-      console.log('Invalid Pokémon: Not an object');
-      return;
+    if (
+      typeof pokemon === "object" &&
+      "name" in pokemon /* &&
+      "detailsULR" in pokemon */
+    ) {
+      pokemonList.push(pokemon); //
+    } else {
+      console.log("pokemon is not correct");
     }
-
-    const objectKeys = Object.keys(pokemon);
-    // Checks if all expected keys are present (allowing extra keys)
-    const hasValidKeys = expectedKeys.every(key => objectKeys.includes(key));
-
-    if (!hasValidKeys) {
-      console.log('Invalid Pokémon: Keys do not match expected format');
-      return;
-    }
-
-    // If everything is valid, add to list
-    pokemonList.push(pokemon);
   }
 
   // Public function: returns the full list of Pokémon
@@ -84,63 +41,115 @@ let pokemonRepository = (function () {
 
   // Public function: adds a list item and button to the HTML for each Pokemon
   function addListItem(pokemon){
-    // Selects the HTML element with class "pokemon-list" (parent container in the DOM)
-    let pokemonList = document.querySelector(".pokemon-list");
-    // Creates a new list item and button
+    let pokemonList = document.querySelector(".pokemon-list"); // Selects the HTML element with class "pokemon-list" (parent container in the DOM)
     let listpokemon = document.createElement("li");
-    let button = document.createElement("button");
-    // Sets the button text to the Pokemon's name
-    button.innerText = pokemon.name;
-    // Adds a class to the button for styling
-    button.classList.add("button-class");
+    let button = document.createElement("button"); // Creates a new list item and button
+    button.innerText = pokemon.name; // Sets the button text to the Pokemon's name
+    button.classList.add("button-class");  // Adds a class to the button for styling
+    listpokemon.appendChild(button); // Adds (appends) the button to the list item
+    pokemonList.appendChild(listpokemon); // and the list item to the list in the page
 
-    // Adds (appends) the button to the list item- and the list item to the list in the page
-    listpokemon.appendChild(button);
-    pokemonList.appendChild(listpokemon);
-
-    //Calls new function to add click listener
-    addClickListener(button,pokemon);
+    addClickListener(button,pokemon); //Calls new function to add click listener
   }
 
-  // Function to show Pokemon details
-  function showDetails(pokemon){
-    // Prints the full Pokemon object to the console
-    console.log(pokemon);
-  }
-
-  //New function to add event listener to a button
+  //Function to add event listener to a button
   function addClickListener(button, pokemon){
     button.addEventListener("click",function (){
       showDetails(pokemon)
     });
   }
 
+  function loadList() {
+    showLoadingMessage(); // Shows loading message first
+    return fetch(apiUrl).then(function (response) { // Calls the fetch function to get data from the apiUrl (list of Pokemon)
+      return response.json();  // When the response is received, parse it as JSON
+    }).then(function (json) {
+      json.results.forEach(function (item) { // Once the JSON is ready, go through each result in the 'results' array
+        let pokemon = { // Creates a new Pokémon object with name and detailsUrl
+          name: item.name,
+          detailsUrl: item.url
+        };
+        add(pokemon); // Adds the Pokémon object to the repository
+        console.log(pokemon);
+      });
+    }).catch(function (e) { // If an error happens anywhere in this chain, log it
+      hideLoadingMessage(); // Hides message if an error occurs
+      console.error(e);
+    })
+  }
+
+  function loadDetails(item) {
+    showLoadingMessage(); // Shows loading message first
+    let url = item.detailsUrl; // Gets the URL for the individual Pokemon details
+    return fetch(url).then(function (response) {  // Fetches data from that URL
+      return response.json(); // Parses the response as JSON
+    }).then(function (details) {
+      hideLoadingMessage(); // Hides message after success
+      // Now we add the details to the item
+      item.imageUrl = details.sprites.front_default; // Image of Pokemon  
+      item.height = details.height;                  // Height
+      item.types = details.types;                    // Types Array
+    }).catch(function (e) {
+      hideLoadingMessage(); // Hides message if an error occurs
+      console.error(e); // If there's an error fetching or parsing, logs it
+    });
+  }
+
+  // Function to show Pokemon details
+  function showDetails(item) {
+    pokemonRepository.loadDetails(item).then(function () {
+      console.log(item);
+    });
+  }
+
+  // Loading Message Function
+  function showLoadingMessage() {
+  let loadingMessage = document.createElement('p'); // Creates a paragraph element
+  loadingMessage.innerText = 'Loading...'; // Sets the text
+  loadingMessage.classList.add('loading-message'); // Adds a class for easy styling/selection
+  document.body.appendChild(loadingMessage); // Appends it to the body
+}
+
+function hideLoadingMessage() {
+  let loadingMessage = document.querySelector('.loading-message'); // Selects the loading message
+  if (loadingMessage) {
+    loadingMessage.remove(); // Removes it if it exists
+  }
+}
+
+
+
   // Returns an object that exposes only the public functions
   return {
     getAll,
     add,
     filterByName,
-    addListItem
+    addListItem,
+    loadList,
+    loadDetails,
+    showDetails
   };
 
 })(); // <-- IIFE ends and runs immediately
 
 // Adds a new Pokemon to test the add function
-pokemonRepository.add({
+/* pokemonRepository.add({
   name: 'Onix',
   height: 8.8,
   types: ['rock', 'ground'],
   speed: 70,
   catchRate: 45
-});
+}); */
 
-// Use the public method 'getAll' to get all Pokemon and print each one to the page
+/* // Use the public method 'getAll' to get all Pokemon and print each one to the page
 // Uses forEach() instead of a for loop
 pokemonRepository.getAll().forEach(function (pokemon) {
   // For each Pokemon, create a button on the page
   pokemonRepository.addListItem(pokemon);
 
-/*  // Build a string with the Pokemon’s name and height
+
+
+  // Build a string with the Pokemon’s name and height
   let displayText = pokemon.name + ' (height: ' + pokemon.height + ')';
 
   // Add a comment if the Pokemon is tall
@@ -149,7 +158,14 @@ pokemonRepository.getAll().forEach(function (pokemon) {
   }
 
   // Write the string to the HTML document followed by a line break
-  document.write(displayText + '<br>'); */
+  document.write(displayText + '<br>'); 
+}); 
+*/
+
+pokemonRepository.loadList().then(function () {
+  pokemonRepository.getAll().forEach(function (pokemon) {  // Uses the public method 'getAll' to get all Pokemon and print each one to the page and Uses forEach() instead of a for loop
+    pokemonRepository.addListItem(pokemon); // For each Pokemon, creates a button on the page
+  });
 });
 
 
