@@ -95,29 +95,79 @@ let pokemonRepository = (function () {
     });
   }
 
-  // Function to show Pokemon details
-  function showDetails(item) {
-    pokemonRepository.loadDetails(item).then(function () {
-      console.log(item);
+ function showDetails(item) {
+  // Load details from API (or wherever)
+  pokemonRepository.loadDetails(item).then(function () {
+    // After details are loaded, open the modal with Pokémon info
+    let modalContent = `
+      <img src="${item.imageUrl}" alt="${item.name}" style="width:150px; height:auto;">
+      <p>Height: ${item.height} dm</p>
+    `;
+    showModal(item.name, modalContent);
+  });
+  }
+
+  // Modal Function with title and content text
+  function showModal(title, content) { 
+    let modalContainer = document.querySelector('#modal-container'); // Selects modal container element
+    modalContainer.innerHTML = ''; // Clears existing content
+
+    let modal = document.createElement('div'); // Creates a new div for modal
+    modal.classList.add('modal'); // Adds CSS class 'modal' 
+
+    let closeButtonElement = document.createElement('button');
+    closeButtonElement.classList.add('modal-close');
+    closeButtonElement.innerText = 'Close';
+    closeButtonElement.addEventListener('click', hideModal);
+
+    let titleElement = document.createElement('h1');
+    titleElement.innerText = title;
+
+    let contentElement = document.createElement('div');
+    contentElement.innerHTML = content; // Allow HTML
+
+    modal.appendChild(closeButtonElement);
+    modal.appendChild(titleElement);
+    modal.appendChild(contentElement);
+    modalContainer.appendChild(modal);
+
+    modalContainer.classList.add('is-visible');
+
+    modalContainer.addEventListener('click',(e) => {
+      let target = e.target;
+      if (target===modalContainer){
+        hideModal();
+      }
     });
   }
 
+  function hideModal(){
+    let modalContainer=document.querySelector('#modal-container');
+    modalContainer.classList.remove('is-visible')
+  }
+
+  window.addEventListener('keydown', (e) => {
+    let modalContainer = document.querySelector('#modal-container');
+    if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+      hideModal();  
+    }
+  });
+
+
   // Loading Message Function
   function showLoadingMessage() {
-  let loadingMessage = document.createElement('p'); // Creates a paragraph element
-  loadingMessage.innerText = 'Loading...'; // Sets the text
-  loadingMessage.classList.add('loading-message'); // Adds a class for easy styling/selection
-  document.body.appendChild(loadingMessage); // Appends it to the body
-}
-
-function hideLoadingMessage() {
-  let loadingMessage = document.querySelector('.loading-message'); // Selects the loading message
-  if (loadingMessage) {
-    loadingMessage.remove(); // Removes it if it exists
+    let loadingMessage = document.createElement('p'); // Creates a paragraph element
+    loadingMessage.innerText = 'Loading...'; // Sets the text
+    loadingMessage.classList.add('loading-message'); // Adds a class for easy styling/selection
+    document.body.appendChild(loadingMessage); // Appends it to the body
   }
-}
 
-
+  function hideLoadingMessage() {
+    let loadingMessage = document.querySelector('.loading-message'); // Selects the loading message
+    if (loadingMessage) {
+      loadingMessage.remove(); // Removes it if it exists
+    }
+  }
 
   // Returns an object that exposes only the public functions
   return {
@@ -131,6 +181,17 @@ function hideLoadingMessage() {
   };
 
 })(); // <-- IIFE ends and runs immediately
+
+/*  WHATS DOES THIS DO/ WHERE DOES IT GO? 
+document.addEventListener('DOMContentLoaded', function () {
+  let container = document.querySelector('#image-container'); // Finds the container by ID
+
+  let myImage = document.createElement('img'); // Creates an <img> element
+  myImage.src = 'https://picsum.photos/300/300'; // Sets the image source
+
+  container.appendChild(myImage); // Adds the image to the container
+}); */
+
 
 // Adds a new Pokemon to test the add function
 /* pokemonRepository.add({
