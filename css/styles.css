@@ -78,14 +78,13 @@ body {
 }
 
 .modal {
-  margin: auto;
+  background: transparent;
   display: inline-block;
   box-sizing: border-box;
-  background: #fff;
   padding: 15px;
   width: 100%;
-  max-width: 700px;
   text-align: left;
+  margin: 0;
 }
 
 .modal-close {
@@ -94,6 +93,7 @@ body {
   background: none;
   color: #777;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .modal h1 {
@@ -104,7 +104,4 @@ body {
   margin-bottom: 0;
 }
 
-.modal-close {
-  cursor: pointer; /* Shows pointer on hover */
-}
 
