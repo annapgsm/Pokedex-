@@ -9,19 +9,17 @@ body {
 
 .pokemon-list {
   display: flex;
-  flex-direction: column;       /* Stack vertically */
-  align-items: center;          /* Center horizontally */
-  padding: 0;
-  list-style: none;
-  gap: 10px;
+  flex-wrap: wrap;      /* Allow wrapping of columns to next row */
+  margin-left: -15px;   /* Bootstrap row negative margin */
+  margin-right: -15px;
 }
 
-.pokemon-list li {
-  list-style: none;             /* Remove bullet points */
-  width: 100%;                  /* Optional: make the item span full width */
-  display: flex;
-  justify-content: center;      /* Center button inside */
+.pokemon-list > div {
+  padding-left: 15px;   /* Bootstrap column padding */
+  padding-right: 15px;
+  /* flex-grow can be added if needed */
 }
+
 
 .button-class{
   background-color: aquamarine;
