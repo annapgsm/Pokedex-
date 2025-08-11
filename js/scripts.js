@@ -23,47 +23,6 @@ let pokemonRepository = (function () {
     return pokemonList;
   }
 
-  // Public function to search by name (exact match or partial)
-  function filterByName(searchTerm) {
-    // Removes any extra spaces from the beginning and end of input
-    // then converts it to lowercase for case-insensitive comparison
-    let cleanTerm = searchTerm.trim().toLowerCase();
-
-    // Filters the pokemonList array: keeps only the Pokemon whose name
-    // (converted to lowercase) includes the cleaned search term
-    return pokemonList.filter(function (pokemon) {
-      return pokemon.name.toLowerCase().includes(cleanTerm);
-    });
-  }
-
-  // Public function: adds a list item and button to the HTML for each Pokemon
-  function addListItem(pokemon){
-    let pokemonList = document.querySelector(".pokemon-list"); // Selects the HTML element with class "pokemon-list" (parent container in the DOM)
-    let listpokemon = document.createElement("li");
-    listpokemon.classList.add("list-group-item"); // NEW Bootstrap list style
-
-    // Creates a button element for Pokemon
-    let button = document.createElement("button"); // Creates a new list item and button
-    button.innerText = pokemon.name; // Sets the button text to the Pokemon's name
-    button.classList.add("btn", "btn-light", "btn-block", "text-capitalize");  // Adds a Bootstrap class to the button for styling
-
-    // Add Bootstrap modal attributes to trigger the modal on click
-    button.setAttribute("data-toggle", "modal");      // Enables modal toggle
-    button.setAttribute("data-target", "#pokemonModal"); // Targets the modal by its ID
-
-    listpokemon.appendChild(button); // Adds (appends) the button to the list item
-    pokemonList.appendChild(listpokemon); // and the list item to the list in the page
-
-    addClickListener(button,pokemon); //Calls new function to add click listener
-  }
-
-  //Function to add event listener to a button
-  function addClickListener(button, pokemon){
-    button.addEventListener("click",function (){
-      showDetails(pokemon)
-    });
-  }
-
   function loadList() {
     showLoadingMessage(); // Shows loading message first
     return fetch(apiUrl).then(function (response) { // Calls the fetch function to get data from the apiUrl (list of Pokemon)
@@ -101,8 +60,68 @@ let pokemonRepository = (function () {
     });
   }
 
+  // Public function to search by name (exact match or partial)
+  function filterByName(searchTerm) {
+    // Removes any extra spaces from the beginning and end of input
+    // then converts it to lowercase for case-insensitive comparison
+    let cleanTerm = searchTerm.trim().toLowerCase();
 
- function showDetails(item) {
+    // Filters the pokemonList array: keeps only the Pokemon whose name
+    // (converted to lowercase) includes the cleaned search term
+    return pokemonList.filter(function (pokemon) {
+      return pokemon.name.toLowerCase().includes(cleanTerm);
+    });
+  }
+
+  function addListItem(pokemon) {
+  let pokemonList = document.querySelector(".pokemon-list"); // main row container
+
+    // First, load Pokémon details (this gets imageUrl)
+    loadDetails(pokemon).then(function () {
+      // Create Bootstrap column
+      let col = document.createElement("div");
+      col.classList.add("col-md-3", "mb-4", "d-flex", "justify-content-center");
+
+      // Create card container
+      let card = document.createElement("div");
+      card.classList.add("card", "w-100", "text-center");
+
+      // Card body for the name
+      let cardBody = document.createElement("div");
+      cardBody.classList.add("card-body");
+
+      // Pokémon name as card title
+      let title = document.createElement("h5");
+      title.classList.add("card-title", "text-capitalize");
+      title.innerText = pokemon.name;
+
+      // Append title to the body
+      cardBody.appendChild(title);
+
+      // Pokémon image
+      let img = document.createElement("img");
+      img.classList.add("card-img-bottom", "img-fluid");
+      img.alt = pokemon.name;
+      img.src = pokemon.imageUrl; // now guaranteed to be set
+
+      // Make the card clickable to open modal
+      card.style.cursor = "pointer";
+      card.addEventListener("click", function () {
+        showDetails(pokemon);
+      });
+
+      // Assemble card
+      card.appendChild(cardBody);
+      card.appendChild(img);
+      col.appendChild(card);
+
+      // Add to container
+      pokemonList.appendChild(col);
+    });
+  }
+
+
+  function showDetails(item) {
   // Load details from API (or wherever)
   pokemonRepository.loadDetails(item).then(function () {
     // SHow modal with item
