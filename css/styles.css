@@ -52,10 +52,6 @@ body {
   display: none; /* Hides the button but keeps it in the DOM */
 }
 
-#modal-container {
-  display: none;
-}
-
 #modal-container.is-visible {
   position: fixed;
   padding: 20px;
@@ -77,15 +73,6 @@ body {
   text-align: center;
 }
 
-.modal {
-  background: transparent;
-  display: inline-block;
-  box-sizing: border-box;
-  padding: 15px;
-  width: 100%;
-  text-align: left;
-  margin: 0;
-}
 
 .modal-close {
   float: right;

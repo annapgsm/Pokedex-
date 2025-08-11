@@ -94,7 +94,6 @@ let pokemonRepository = (function () {
       item.height = details.height;
       item.weight = details.weight; 
       item.types = details.types;
-      item.abilities = details.abilities; 
     })
     .catch(e => {
       hideLoadingMessage();
@@ -117,8 +116,6 @@ let pokemonRepository = (function () {
     let modalTitle = $(".modal-title");
     let modalHeader = $(".modal-header");
     
-
-
     //Clears existing content of the model
     modalTitle.empty();
     modalBody.empty();
@@ -144,24 +141,6 @@ let pokemonRepository = (function () {
     // Show the modal 
     $('#pokemonModal').modal('show');
   }
-
-  /*
-
-  function hideModal(){
-    let modalContainer=document.querySelector('#modal-container');
-    modalContainer.classList.remove('is-visible')
-  }
-  
-  window.addEventListener('keydown', (e) => {
-    let modalContainer = document.querySelector('#modal-container');
-    if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
-      hideModal();  
-    }
-  });
-
-
-  */
-
   
   // Loading Message Function
   function showLoadingMessage() {
@@ -198,12 +177,3 @@ pokemonRepository.loadList().then(function () {
   });
 });
 
-/*  WHATS DOES THIS DO/ WHERE DOES IT GO? 
-document.addEventListener('DOMContentLoaded', function () {
-  let container = document.querySelector('#image-container'); // Finds the container by ID
-
-  let myImage = document.createElement('img'); // Creates an <img> element
-  myImage.src = 'https://picsum.photos/300/300'; // Sets the image source
-
-  container.appendChild(myImage); // Adds the image to the container
-}); */
