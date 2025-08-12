@@ -80,7 +80,7 @@ let pokemonRepository = (function () {
     loadDetails(pokemon).then(function () {
       // Create Bootstrap column
       let col = document.createElement("div");
-      col.classList.add("col-md-3", "mb-4", "d-flex", "justify-content-center");
+      col.classList.add("col-md-2", "mb-4", "d-flex", "justify-content-center");
 
       // Create card container
       let card = document.createElement("div");
@@ -194,5 +194,22 @@ pokemonRepository.loadList().then(function () {
   pokemonRepository.getAll().forEach(function (pokemon) {  // Uses the public method 'getAll' to get all Pokemon and print each one to the page and Uses forEach() instead of a for loop
     pokemonRepository.addListItem(pokemon); // For each Pokemon, creates a button on the page
   });
+
+  // prevent reload on clicking the button
+  $('#pokemon-search-form').on('submit', function(e) {
+    e.preventDefault();
+  });
+
+  // Set up live filtering on the search input after DOM is ready and cards are loaded
+  $('#pokemon-search-form input[type="search"]').on('input', function () {
+    let searchTerm = $(this).val().toLowerCase();
+
+    $('.pokemon-list. card').each(function () {
+      let name = $(this).find('.card-title').text().toLowerCase();
+      // Show card's column if name includes search term, else hide
+      $(this).closest('[class*="col-"]').toggle(name.includes(searchTerm));
+    });
+  });
 });
+
 
