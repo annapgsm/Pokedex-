@@ -7,35 +7,38 @@ body {
   margin: auto;
 }
 
+
+/* Ensure grid columns have side spacing */
+.pokemon-list > [class*='col-'] {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* Add extra breathing room from screen edges if needed */
 .pokemon-list {
-  display: flex;
-  flex-wrap: wrap;      /* Allow wrapping of columns to next row */
-  margin-left: -15px;   /* Bootstrap row negative margin */
-  margin-right: -15px;
+  padding-left: 10px;  /* adjust as needed */
+  padding-right: 10px;
+  margin-top: 2rem; /* space below navbar */
 }
 
-.pokemon-list > div {
-  padding-left: 15px;   /* Bootstrap column padding */
-  padding-right: 15px;
-  /* flex-grow can be added if needed */
+/* Card appearance */
+.pokemon-list .card {
+  max-width: 200px;
+  margin: 0 auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.pokemon-list .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+}
 
-.button-class{
-  background-color: aquamarine;
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  text-decoration: none; 
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  background-color: white;
-  color: black;
-  border: 2px solid aquamarine;
+/* Image inside card */
+.pokemon-list .card img {
+  max-height: 120px;
+  object-fit: contain;
 }
 
 .loading-message {
@@ -70,7 +73,6 @@ body {
   display: grid;
   text-align: center;
 }
-
 
 .modal-close {
   float: right;
