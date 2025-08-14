@@ -128,38 +128,28 @@ let pokemonRepository = (function () {
     showModal(item);// Pass the full item with details
   });
   }
+
   // Modal Function with title and content text
   function showModal (item) {
-    // Creates variables:
-    let modalBody = $(".modal-body");
-    let modalTitle = $(".modal-title");
-    let modalHeader = $(".modal-header");
-    
-    //Clears existing content of the model
-    modalTitle.empty();
-    modalBody.empty();
+  // Set modal title text
+  $('#pokemonModalLabel').text(item.name);
 
-    // Creates element for name in modal content
-    let nameElement = $("<h5>").text(item.name);
-    // creates img in modal content
-    let imageElementFront = $('<img class="modal-img mb-3" style="width:50%"/>');
-    imageElementFront.attr("src", item.imageUrl);
-    // creates element for height, weight and types in modal content
-    let heightElement = $("<p>").text("Height: " + item.height);
-    let weightElement = $("<p>").text("Weight: " + item.weight);
-    let types = item.types.map(t => t.type.name).join(", "); // etracts each type's name into an array
-    let typesElement = $("<p>").html("Types: " + types);
+  // Set image
+  $('#modal-image')
+    .attr('src', item.imageUrl)
+    .attr('alt', item.name);
 
-    modalTitle.append(nameElement); // Appends the name to the modal title
-    modalBody.append(imageElementFront);
-    modalBody.append(heightElement);
-    modalBody.append(weightElement);
-    modalBody.append(typesElement);
+  // Fill the other details
+  $('#modal-height').text('Height: ' + item.height);
+  $('#modal-weight').text('Weight: ' + item.weight);
+  $('#modal-types').text(
+    'Types: ' + item.types.map(t => t.type.name).join(', ')
+  );
 
-
-    // Show the modal 
-    $('#pokemonModal').modal('show');
+  // Show the modal
+  $('#pokemonModal').modal('show');
   }
+
   
   // Loading Message Function
   function showLoadingMessage() {
@@ -190,26 +180,26 @@ let pokemonRepository = (function () {
 })(); // <-- IIFE ends and runs immediately
 
 
+// Load and display all Pokémon initially
 pokemonRepository.loadList().then(function () {
-  pokemonRepository.getAll().forEach(function (pokemon) {  // Uses the public method 'getAll' to get all Pokemon and print each one to the page and Uses forEach() instead of a for loop
-    pokemonRepository.addListItem(pokemon); // For each Pokemon, creates a button on the page
-  });
-
-  // prevent reload on clicking the button
-  $('#pokemon-search-form').on('submit', function(e) {
-    e.preventDefault();
-  });
-
-  // Set up live filtering on the search input after DOM is ready and cards are loaded
-  $('#pokemon-search-form input[type="search"]').on('input', function () {
-    let searchTerm = $(this).val().toLowerCase();
-
-    $('.pokemon-list. card').each(function () {
-      let name = $(this).find('.card-title').text().toLowerCase();
-      // Show card's column if name includes search term, else hide
-      $(this).closest('[class*="col-"]').toggle(name.includes(searchTerm));
-    });
+  pokemonRepository.getAll().forEach(function (pokemon) {
+    pokemonRepository.addListItem(pokemon);
   });
 });
 
+// Search functionality
+$(document).ready(function () {
+  $('#pokemon-search-form').on('submit', function (e) {
+    e.preventDefault();
+    console.log('Intercepted submit on #pokemon-search-form');
+
+    let name = $('#pokemon-search-form input[type="search"]').val().toLowerCase();
+    let filteredPokemon = pokemonRepository.filterByName(name);
+
+    $('.pokemon-list').empty();
+    filteredPokemon.forEach(function (pokemon) {
+      pokemonRepository.addListItem(pokemon);
+    });
+  });
+});
 
