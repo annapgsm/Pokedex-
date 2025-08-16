@@ -206,3 +206,20 @@ $(document).ready(function () {
   });
 });
 
+// Show/hide "Scroll to Top" button
+window.addEventListener('scroll', function() {
+  const btn = document.getElementById('scrollToTopBtn');
+  if (window.scrollY > 250) { // Show after 250px scroll
+    btn.classList.add('show');
+  } else {
+    btn.classList.remove('show');
+  }
+});
+
+// Scroll smoothly to top when the button is clicked
+document.getElementById('scrollToTopBtn').addEventListener('click', function() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
