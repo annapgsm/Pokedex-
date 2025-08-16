@@ -1,5 +1,28 @@
 // Create a variable (pokemonRepository) to hold the IIFE result
 let pokemonRepository = (function () {
+
+  // Map Pokémon types to colors
+let typeColors = {
+  normal: '#A8A77A',
+  fire: '#EE8130',
+  water: '#6390F0',
+  electric: '#F7D02C',
+  grass: '#7AC74C',
+  ice: '#96D9D6',
+  fighting: '#C22E28',
+  poison: '#A33EA1',
+  ground: '#E2BF65',
+  flying: '#A98FF3',
+  psychic: '#F95587',
+  bug: '#A6B91A',
+  rock: '#B6A136',
+  ghost: '#735797',
+  dragon: '#6F35FC',
+  dark: '#705746',
+  steel: '#B7B7CE',
+  fairy: '#D685AD'
+};
+
   // Private array inside the IIFE
   // Create a new variable (pokemonList) 
   let pokemonList = [];
@@ -89,6 +112,31 @@ let pokemonRepository = (function () {
       // Card body for the name
       let cardBody = document.createElement("div");
       cardBody.classList.add("card-body");
+
+      // to enable proper positioning for the badge
+      card.style.position = "relative";
+
+      // Create a visual type badge (color strip, no text)
+      let badge = document.createElement("div");
+      badge.classList.add("type-badge");
+
+      // Modern check: only proceed if types exist and are an array
+      if (Array.isArray(pokemon.types) && pokemon.types.length > 0) {
+        let typeNames = pokemon.types.map(t => t.type.name);
+        console.log('Pokémon types:', typeNames);
+
+        let color1 = typeColors[typeNames[0].toLowerCase()];
+        let color2 = typeNames[1] ? typeColors[typeNames[1].toLowerCase()] : null;
+        console.log(`Mapped colors: [${color1}], [${color2}]`);
+
+        if (typeNames.length === 1) {
+          badge.style.backgroundColor = color1 || '#ccc';
+        } else if (typeNames.length === 2) {
+          badge.style.background = `linear-gradient(to right, ${color1 || '#ccc'} 50%, ${color2 || '#ddd'} 50%)`;
+        }
+      }
+
+      card.appendChild(badge);
 
       // Pokémon name as card title
       let title = document.createElement("h5");
