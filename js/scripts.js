@@ -174,7 +174,9 @@ let pokemonRepository = (function () {
     addListItem,
     loadList,
     loadDetails,
-    showDetails
+    showDetails,
+    showLoadingMessage,
+    hideLoadingMessage
   };
 
 })(); // <-- IIFE ends and runs immediately
@@ -185,6 +187,7 @@ pokemonRepository.loadList().then(function () {
   pokemonRepository.getAll().forEach(function (pokemon) {
     pokemonRepository.addListItem(pokemon);
   });
+  pokemonRepository.hideLoadingMessage();
 });
 
 // Search functionality
