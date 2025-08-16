@@ -9,25 +9,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
   </head>
+
   <body>
     <!-- Bootstrap Navbar -->
     <!-- Just an image -->
     <nav class="navbar navbar-light bg-light">
-      <a class="navbar-brand" href="#">
-        <img src="/img/logo.png.png" width="150" alt="">
+        <a class="navbar-brand" href="#">
+        <img src="/img/Pokemon-Index-Logo.svg" width="150" alt="">
       </a>
-  
-      <form id="pokemon-search-form" class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
     
+      <form id="pokemon-search-form" class="form-inline my-0 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn custom-search-btn my-0 my-sm-0" type="submit">Search</button>
+        <a href="index.html" class="btn custom-home-btn mx-2" aria-label="Home">
+          <i class="bi bi-house-door-fill" style="font-size: 1.2rem;"></i>
+        </a>
+      </form>
     </nav>
     
-    <h1 class="mt-5">Pokémon Index</h1>
-
     <!-- Pokemon list container -->
     <div class="pokemon-list row mt-5"></div>
 
@@ -63,6 +65,6 @@
     <script> window.jQuery || document.write('<script src="js/jquery-3.3.1.min.js"><\/script>'); </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
+    <script src="js/scripts.dist.js"></script>
   </body>
 </html>
