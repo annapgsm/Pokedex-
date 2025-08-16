@@ -1,10 +1,13 @@
 body {
   font-family: 'Rubik', sans-serif;
-  background: #f0f8ff;
+  background: #f2f2f2;
   color: #333;
   text-align:center;
-  padding: 20px;
   margin: auto;
+}
+
+.navbar {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -40,6 +43,13 @@ body {
   max-height: 120px;
   object-fit: contain;
 }
+
+#pokemonModalLabel {
+  text-transform: capitalize;
+  text-align: center;
+  width: 100%;
+}
+
 
 .loading-message {
   text-align: center;
@@ -89,6 +99,35 @@ body {
 
 .modal p {
   margin-bottom: 0;
+}
+
+.custom-search-btn {
+  color: #fff;
+  background-color:#ffca02;
+}
+
+.custom-search-btn:hover,
+.custom-search-btn:focus {
+  background-color: #c79e07;  
+  color: #fff;
+}
+
+
+.custom-home-btn {
+  color: #fff;
+  background-color: #3861ac;  
+}
+
+.custom-home-btn:hover,
+.custom-home-btn:focus {
+  background-color: #1d2c5f;      /* Even darker blue on hover */
+  color: #fff;
+}
+
+.custom-home-btn i {
+  vertical-align: middle;
+  margin-right: 0;
+  color: inherit; /* inherit button color */
 }
 
 
